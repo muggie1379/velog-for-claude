@@ -35,8 +35,13 @@ description: "Draft and auto-publish a game-dev devlog to 디땁's velog blog at
 - 소제목(`##`)으로 섹션을 나눠서 한 눈에 구조가 보이게 한다.
 - 다만 리스트/표를 위해 내용을 억지로 쪼개거나 과장하지 않는다 — devlog.md에 근거한 사실만, 더 읽기 쉬운 형태로 정리하는 것이 목적이다.
 
-## 스크린샷 원칙 (사용자 지시, 2026-09-13)
+## 스크린샷 원칙 (사용자 지시, 2026-09-13 / History 예외 확정 2026-09-13)
 포스트를 처음 보는 사람 — 특히 면접관, 비전공자, 학생 — 도 하나씩 따라올 수 있도록, 글이 허용하는 한 스크린샷을 적극적으로 많이 첨부한다. 글만으로 설명하고 넘어가지 말고, 단계마다 그 화면을 보여준다.
+
+**예외 — History 게시글은 텍스트만 유지한다.** History는 devlog.md를 가공
+없이 그대로 미러링하는 원시 로그라서, 튜토리얼처럼 단계별로 보여주는 목적이
+아니다. 스크린샷은 DevLog(튜토리얼 성격)와 Skill 소개 같은 Workflow 글에만
+쓰고, History에는 넣지 않는다.
 
 **스크린샷 확보 방법:**
 - Claude Code는 별도 프로그램 설치 없이 PowerShell(.NET `System.Drawing` + `System.Windows.Forms`)로 전체 화면을 직접 캡처할 수 있다는 걸 확인함 (Snipping Tool 등 추가 설치 불필요).
