@@ -1,5 +1,5 @@
 ---
-name: velog-for-claude
+name: velog-publisher
 description: "Draft and auto-publish a game-dev devlog to 디땁's velog blog at the end of each work session, sourced only from his project's devlog.md file, via browser automation on his linked computer."
 ---
 
@@ -46,7 +46,7 @@ description: "Draft and auto-publish a game-dev devlog to 디땁's velog blog at
 - Unity Editor처럼 Claude가 클릭/입력으로 조작할 수 없는 데스크톱 앱은, 사용자에게 어떤 동작을 해달라고 미리 요청한 뒤 그 결과 화면을 캡처한다. 브라우저(velog 글쓰기 화면 등)는 Claude가 직접 조작하며 스크린샷도 그 과정에서 자연스럽게 확보한다.
 - 작업을 다시 해봐야 하는 상황이 생기면, 그 재작업 과정에서도 스크린샷을 하나씩 다시 찍어 기록한다.
 
-**메타 소재 — Velog 자동화 Skill 자체를 다루는 devlog:** Claude Code에 이 `velog-for-claude` Skill을 만들고 자동 발행을 설정한 과정 자체도 "AI 활용/업무 자동화" 어필 포인트로서 별도 devlog 소재로 다룰 가치가 있다. 이 주제를 다룰 때는 Skill 생성 화면, SKILL.md 내용, 트리거 방식 등을 스크린샷과 함께 처음 보는 사람도 이해할 수 있을 만큼 자세히 설명한다.
+**메타 소재 — Velog 자동화 Skill 자체를 다루는 devlog:** Claude Code에 이 `velog-publisher` Skill을 만들고 자동 발행을 설정한 과정 자체도 "AI 활용/업무 자동화" 어필 포인트로서 별도 devlog 소재로 다룰 가치가 있다. 이 주제를 다룰 때는 Skill 생성 화면, SKILL.md 내용, 트리거 방식 등을 스크린샷과 함께 처음 보는 사람도 이해할 수 있을 만큼 자세히 설명한다.
 
 ## 서술 순서 원칙 (사용자 지시, 2026-09-13)
 실제 작업은 시행착오·되돌리기·순서 꼬임이 있을 수 있다 (예: 뭔가 설치했다가 실제로는 필요 없어서 되돌리거나, 에러가 나서 다시 시도하는 등). 하지만 devlog에는 이 과정을 시간순 그대로 나열하지 않는다. 대신 "지금 아는 걸 알고 처음부터 다시 한다면 어떤 순서로 했을까"를 기준으로, 깔끔하고 논리적인 순서의 튜토리얼처럼 재구성해서 쓴다.
@@ -60,7 +60,7 @@ description: "Draft and auto-publish a game-dev devlog to 디땁's velog blog at
   - **"DevLog"** — 프로젝트의 실제 진행 스토리(기획부터 환경설정, 개발까지 순서대로). 이 Skill이 주로 다루는 시리즈.
   - **"Workflow"** — 그 외 독립적인 참고 자료(이 Skill 소개처럼 그때그때 갱신되는 글).
   - **"Velog"** — 블로그 자체에 대한 메타 글(예: "블로그 개요" — 블로그 목적/소개). 사용자가 직접 관리하며, 이 Skill이 자동으로 글을 추가하는 대상은 아니다.
-- 이 Skill(`velog-for-claude`) 자체의 내용을 그대로 담은 소개 포스트를 velog에 하나 유지한다. 이 SKILL.md가 바뀔 때마다 새 글을 쓰지 않고, **기존 글을 수정**해서 본문에 "마지막 업데이트: YYYY-MM-DD"를 최신화한다.
+- 이 Skill(`velog-publisher`) 자체의 내용을 그대로 담은 소개 포스트를 velog에 하나 유지한다. 이 SKILL.md가 바뀔 때마다 새 글을 쓰지 않고, **기존 글을 수정**해서 본문에 "마지막 업데이트: YYYY-MM-DD"를 최신화한다.
 - 참고: 이 Skill은 Claude Code가 아니라 일반 Claude 채팅에서 처음 만들어졌다. 그래서 Claude Code 세션 히스토리 검색으로는 최초 생성 프롬프트를 찾을 수 없다 — 소개 포스트에는 지금 시점의 실제 파일 내용을 근거로 쓰고, 최초 생성 경위를 추측해서 쓰지 않는다.
 
 ## History 게시글 구조 (사용자 지시, 2026-09-13)
@@ -102,24 +102,37 @@ velog.io를 브라우저 자동화로 조작할 때 필요한 URL 패턴, CodeMi
 `references/velog-editor-guide.md`를 읽는다. 여기 없는 새로운 사실을
 알아내면 이 파일이 아니라 그 reference 파일에 추가한다 (본문은 짧게 유지).
 
-## 스킬 이름/등록 정보 관련 알려진 문제 (2026-09-13)
-이 Skill의 원래 이름은 `velog-weekly-devlog`였고, 범위가 넓어져서
-`velog-for-claude`로 바꾸려 했다. frontmatter의 `name`과 폴더명, GitHub
-저장소명은 바꿨지만, **Claude 앱이 내부적으로 관리하는 스킬 등록 정보
-(`manifest.json`, 폴더 위치 포함)는 별도 소스에서 재동기화되며 수동으로 고친
-폴더 이동/파일 수정을 되돌려버리는 것을 확인했다** — 폴더가 다시
-`velog-weekly-devlog`로 복원되고 SKILL.md 내용도 오늘 수정분이 전부 사라진
-채 원본으로 되돌아간 사고가 있었다 (GitHub 저장소 커밋 이력에서 복구함).
+## 스킬 이름/등록 정보 관련 알려진 문제와 해결 (2026-09-13)
+이 Skill의 원래 이름은 `velog-weekly-devlog`였다. 범위가 넓어져서(devlog
+발행 외에 History/Skill 소개 글 관리까지) 이름을 바꾸려고 처음엔
+`velog-for-claude`로 정하고 frontmatter `name`, 폴더명, GitHub 저장소명을
+전부 손으로 고쳤는데, **몇 번이고 폴더가 다시 `velog-weekly-devlog`로
+복원되고 SKILL.md 수정 내용까지 전부 원본으로 되돌아가는 사고를 겪었다**
+(GitHub 저장소 커밋 이력에서 매번 복구함).
 
-**교훈**: 이 Skill의 폴더 이름이나 앱 내부 등록 정보(manifest.json)를 직접
-손으로 고치려 하지 않는다 — 되돌려질 뿐 아니라 SKILL.md 내용 자체가 유실될
-위험이 있다. 대신:
-- 내용 변경(SKILL.md 본문, references/)은 안전하게 그대로 편집한다.
-- **작업이 끝날 때마다 이 스킬 폴더도 GitHub 저장소([muggie1379/velog-for-claude](https://github.com/muggie1379/velog-for-claude))에 커밋/푸시해서, 앱이 되돌리는 사고가 다시 나도 최신 내용을 잃지 않게 한다.** 되돌아간 걸 발견하면 이 저장소에서 `git clone`으로 복구한다.
-- 이름 자체를 앱 차원에서 진짜로 바꾸는 방법(제대로 된 rename 경로)은 아직
-  못 찾았다 — 사용자가 원하면 skill-creator의 패키징(`package_skill.py`)으로
-  새 `.skill` 파일을 만들어 사용자가 직접 "Save skill"로 재설치하는 방식을
-  시도해볼 수 있다. 파일 시스템을 직접 건드리는 시도는 다시 하지 않는다.
+한참 뒤에야 진짜 원인을 찾았다: **Claude 앱은 스킬 이름에 예약어 "claude"가
+들어가는 걸 거부한다** ("Skill name in SKILL.md cannot contain the reserved
+word 'claude'" — skill-creator의 패키징 UI로 업로드를 시도할 때 이 에러가
+떴다). `velog-for-claude`라는 이름 자체가 애초에 유효하지 않았던 것이고,
+그래서 파일 시스템을 아무리 손으로 고쳐도 앱이 계속 원래 상태로 되돌렸던
+것이다 (수동 파일/폴더 편집이 문제가 아니라, 이름 자체가 등록될 수 없는
+이름이었다). 최종적으로 `velog-publisher`로 이름을 바꿔서 해결했다.
+
+**교훈**:
+- 새 Skill 이름을 정할 때 "claude"라는 단어(대소문자 무관)가 들어가지
+  않는지 먼저 확인한다.
+- Skill 폴더 이름이나 SKILL.md의 `name`을 바꾸는 것만으로는 앱에 실제로
+  반영되지 않는다 — 폴더/manifest.json을 직접 손으로 고쳐도 앱이 자체
+  스킬 등록 정보와 다시 동기화하면서 되돌린다. **이름을 실제로 바꾸려면
+  skill-creator의 `package_skill.py`로 새 `.skill` 파일을 패키징해서
+  사용자가 앱의 스킬 업로드 화면에서 직접 "저장"해야 한다** (업로드 시
+  이름 유효성도 그 자리에서 검사해준다).
+- 내용만 바뀌는 경우(SKILL.md 본문, references/)는 로컬 파일을 편집해도
+  되지만, **작업이 끝날 때마다 이 스킬 폴더를 GitHub 저장소
+  ([muggie1379/velog-publisher](https://github.com/muggie1379/velog-publisher))에
+  커밋/푸시해서 정본을 지킨다** — 앱이 예기치 않게 폴더를 되돌리는 경우가
+  실제로 있었으므로, 로컬 파일만 믿지 않는다. 되돌아간 걸 발견하면 이
+  저장소에서 `git clone`으로 복구한다.
 
 ## 실패 처리
 - 폴더 미연결, devlog.md 새 내용 없음, velog 로그인 안 됨, 브라우저 조작 실패(UI 변경 등) 중 하나라도 발생하면 억지로 진행하지 말고 사용자에게 상황을 알린다 (예: send_later 나 다음 대화에서 보고)
@@ -128,4 +141,4 @@ velog.io를 브라우저 자동화로 조작할 때 필요한 URL 패턴, CodeMi
 ## 하지 말 것
 - git 명령을 화면 자동화(터미널 열어서 타이핑)로 실행해 로그를 읽으려 시도하지 않는다 — 불안정해서 devlog.md 방식으로 대체하기로 합의됨
 - devlog.md에 없는 성과/진행 상황을 창작하지 않는다
-- 이 Skill 폴더의 이름이나 Claude 앱의 스킬 등록 정보(manifest.json)를 직접 파일 수정으로 바꾸려 하지 않는다 — 앱이 되돌리며 내용 유실 위험이 있다 (위 "스킬 이름/등록 정보 관련 알려진 문제" 참고)
+- 이 Skill의 이름을 폴더명/manifest.json 직접 수정만으로 바꾸려 하지 않는다 — 앱의 스킬 업로드 화면에서 `.skill` 패키지로 다시 저장해야 실제로 반영된다 (위 "스킬 이름/등록 정보 관련 알려진 문제와 해결" 참고). 이름에 "claude"라는 단어를 쓰지 않는다 (예약어라 앱이 거부한다).
